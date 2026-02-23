@@ -9,7 +9,8 @@ if not _G.charSelectExists then
 end
 
 local E_MODEL_DAVEYT = smlua_model_util_get_id("daveyt_geo")
---local TEX_ICON_DAVEYT = get_texture_info("daveyt_icon")
+local TEX_ICON_DAVEYT = get_texture_info("daveyt_icon")
+local DAVEYT_GRAFFITI = get_texture_info("daveytoo_graffiti")
 
 local PALETTE_DAVEYT = {
     [PANTS]  = "515558",
@@ -34,3 +35,4 @@ CHAR_DAVEY_TOOIE = _G.charSelect.character_add(
     TEX_ICON_DAVEYT, -- Life Icon
     1                  -- Camera Scale
 )
+charSelect.character_add_graffiti(CHAR_DAVEY_TOOIE, DAVEYT_GRAFFITI)
