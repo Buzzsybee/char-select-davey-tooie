@@ -21,17 +21,16 @@ function act_davey_spin(m)
         set_mario_animation(m, CHAR_ANIM_TWIRL)
     end
 
-    mario_set_forward_vel(m, approach_f32(m.forwardVel, 0, 3, 3))
+    mario_set_forward_vel(m, approach_f32(m.forwardVel, 0, 0.7, 0.7))
     set_turn_speed(0x800)
     spawn_particle(m, PARTICLE_DUST)
 
     local step = perform_ground_step(m)
     if step == GROUND_STEP_LEFT_GROUND then return set_mario_action(m, ACT_FREEFALL, 0) end
-    if e.actionTick > 30 and not buttonYdown then set_mario_action(m, ACT_IDLE, 0) end
+    if e.spinTimer == 0 then set_mario_action(m, ACT_WALKING, 0) end
 
     if buttonApress then
-        m.vel.y = m.vel.y + 74
-        set_mario_action(m, ACT_DAVEY_SPIN_JUMP, 0)
+        return set_mario_action(m, ACT_DAVEY_SPIN_JUMP, 0)
     end
 
     e.gfxAngleY = e.gfxAngleY + 0x2800
@@ -43,8 +42,18 @@ end
 
 function act_davey_spin_jump(m)
     init_locals(m)
+    if m.actionTimer == 0 then
+        play_character_sound(m, CHAR_SOUND_YAHOO)
+    end
+
+    if buttonZdown then
+        set_mario_action(m, ACT_DAVEY_DRILL_DOWN, 0)
+    end
+
+    if buttonBpress then
+        set_mario_action(m, ACT_DIVE, 0)
+    end
     
-    common_air_action_step(m, ACT_FREEFALL_LAND, CHAR_ANIM_TWIRL, AIR_STEP_NONE)
     if m.vel.y < 0 then
         if buttonAdown then
             m.vel.y = -10
@@ -52,27 +61,23 @@ function act_davey_spin_jump(m)
             m.vel.y = m.vel.y + 0.9
         end
     end
+    common_air_action_step(m, ACT_FREEFALL_LAND, CHAR_ANIM_TWIRL, AIR_STEP_NONE)
 
     set_turn_speed(0x800)
 
-    if buttonZdown then
-        set_mario_action(m, ACT_DAVEY_DRILL_DOWN, 0)
-    end
-
-    e.gfxAngleY = e.gfxAngleY + 0x3000
+    e.gfxAngleY = e.gfxAngleY + 0x4500
     m.marioObj.header.gfx.angle.y = e.gfxAngleY
-
+    
     m.actionTimer = m.actionTimer + 1
     return false
 end
 
 function act_davey_drill_down(m)
     init_locals(m)
-
     if e.actionTick == 0 then
-
+        spawn_particle(m, PARTICLE_MIST_CIRCLE)
     end
-
+    
     mario_set_forward_vel(m, 0)
 
     if m.vel.y < 0 then
@@ -92,6 +97,11 @@ function act_davey_drill_down(m)
 
     e.gfxAngleY = e.gfxAngleY + 0x4000
     m.marioObj.header.gfx.angle.y = e.gfxAngleY
+    
+
+    if e.actionTick % 10 == 0 then
+        play_sound(SOUND_ACTION_SPIN, m.marioObj.header.gfx.cameraToObject)
+    end
 
     m.actionTimer = m.actionTimer + 1
     return false
@@ -106,9 +116,30 @@ function act_davey_item(m)
 
     local step = perform_ground_step(m)
 
-    if e.actionTick > 10 then
+    if m.actionTimer > 10 then
         set_mario_action(m, ACT_IDLE, 0)
     end
+
+    m.actionTimer = m.actionTimer + 1
+end
+
+function act_davey_hammer_swing(m)
+    init_locals(m)
+    if m.actionTimer == 0 then
+        play_character_sound(m, CHAR_SOUND_YAHOO)
+    end
+    set_mario_animation(m, CHAR_ANIM_FIRST_PUNCH)
+
+    m.marioBodyState.handState = MARIO_HAND_PEACE_SIGN
+
+    local step = perform_ground_step(m)
+
+    if m.actionTimer == 4 then
+        spawn_particle(m, PARTICLE_MIST_CIRCLE)
+        spawn_particle(m, PARTICLE_HORIZONTAL_STAR)
+        play_sound(SOUND_ACTION_METAL_HEAVY_LANDING, m.marioObj.header.gfx.cameraToObject)
+    end
+    if m.actionTimer == 15 then return set_mario_action(m, ACT_IDLE, 0) end
 
     m.actionTimer = m.actionTimer + 1
 end
@@ -117,10 +148,36 @@ hook_mario_action(ACT_DAVEY_ITEM_THROW, {every_frame = act_davey_item})
 hook_mario_action(ACT_DAVEY_SPIN_JUMP, {every_frame = act_davey_spin_jump})
 hook_mario_action(ACT_DAVEY_SPIN, {every_frame = act_davey_spin})
 hook_mario_action(ACT_DAVEY_DRILL_DOWN, {every_frame = act_davey_drill_down})
+hook_mario_action(ACT_DAVEY_HAMMER_SWING, {every_frame = act_davey_hammer_swing})
+
+function before_update_dt(m)
+    init_locals(m)
+
+    if m.action == ACT_DAVEY_SPIN then
+        mario_set_forward_vel(m, e.lastSpeed)
+    end
+end
+
+function on_set_action_dt(m)
+    init_locals(m)
+
+    if m.action == ACT_DAVEY_SPIN_JUMP then
+        m.vel.y = 80
+    end
+end
 
 function update_dt_chars(m)
     init_locals(m)
-    global_action_tick(m)
+
+    e.actionTick = e.actionTick + 1
+    if e.prevFrameAction ~= m.action then
+        e.prevFrameAction = m.action
+        e.actionTick = 0
+    end
+
+    e.lastSpeed = get_current_speed(m)
+    determine_stick_spin(c)
+    check_spin(c)
 
     m.peakHeight = m.pos.y
 
@@ -128,15 +185,22 @@ function update_dt_chars(m)
         davey_gravity(m)
     end
 
-    if is_grounded(m) and e.actionTick > 5 then
-        if buttonYpress then
+    if is_grounded(m) then
+        if check_spin(c) then
             set_mario_action(m, ACT_DAVEY_SPIN, 0)
         end
     end
 
-    if action == ACT_CROUCHING and buttonXpress then
-        set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
+    if action == ACT_CROUCHING then
+        if buttonXpress then
+            set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
+        end
+        if buttonYpress then
+            set_mario_action(m, ACT_DAVEY_HAMMER_SWING, 0)
+        end
     end
 end
 
+charSelect.character_hook_moveset(CHAR_DAVEY_TOOIE, HOOK_BEFORE_MARIO_UPDATE, before_update_dt)
 charSelect.character_hook_moveset(CHAR_DAVEY_TOOIE, HOOK_MARIO_UPDATE, update_dt_chars)
+charSelect.character_hook_moveset(CHAR_DAVEY_TOOIE, HOOK_ON_SET_MARIO_ACTION, on_set_action_dt)

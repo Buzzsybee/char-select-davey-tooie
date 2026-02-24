@@ -8,6 +8,11 @@ function reset_davey_states(index)
         index = network_global_index_from_local(0),
         actionTick = 0,
         prevFrameAction = 0,
+        northTimer = 0,
+        southTimer = 0,
+        eastTimer = 0,
+        westTimer = 0,
+        spinTimer = 0,
 
         lastSpeed = 0,
 
@@ -35,10 +40,7 @@ jumpActs = {
     ACT_JUMP_KICK,
     ACT_FREEFALL,
     ACT_WATER_JUMP,
-    ACT_DIVE,
     ACT_STEEP_JUMP,
-    ACT_FORWARD_ROLLOUT,
-    ACT_BACKWARD_ROLLOUT,
     ACT_TOP_OF_POLE_JUMP,
     ACT_GROUND_POUND,
     ACT_SPAWN_SPIN_AIRBORNE,
@@ -117,6 +119,10 @@ function s16(x)
     return x
 end
 
+function ded_to_hex(x)
+    return x * 0x10000 / 360
+end
+
 function spawn_particle(m, particle)
     m.particleFlags = m.particleFlags | particle
 end
@@ -170,22 +176,50 @@ function init_locals(m)
     action = c.action 
 end
 
-function global_action_tick(m)
-    local e = gDaveyStates[m.playerIndex]
-    e.actionTick = e.actionTick + 1
-    if e.prevFrameAction ~= m.action then
-        e.prevFrameAction = m.action
-        e.actionTick = 0
+---@param c MarioState
+function determine_stick_spin(c)
+    init_locals(c)
+    local NorthorSouth = false
+
+    if (c.intendedYaw >= ded_to_hex(-180) and c.intendedYaw <= ded_to_hex(-135)) or (c.intendedYaw >= ded_to_hex(135) and c.intendedYaw <= ded_to_hex(180)) then
+        NorthorSouth = true
+        e.northTimer = 9
+    end
+    if (c.intendedYaw >= ded_to_hex(-45) and c.intendedYaw <= ded_to_hex(45)) then
+        e.southTimer = 9
+        NorthorSouth = true
+    end
+    if (c.intendedYaw >= ded_to_hex(-135) and c.intendedYaw <= ded_to_hex(-45) and not NorthorSouth) then
+        e.westTimer = 9
+    end
+    if (c.intendedYaw >= ded_to_hex(45) and c.intendedYaw <= ded_to_hex(135) and not NorthorSouth) then
+        e.eastTimer = 9
+    end
+
+    if e.northTimer > 0 then
+        e.northTimer = e.northTimer - 1
+    end
+    if e.southTimer > 0 then
+        e.southTimer = e.southTimer - 1
+    end
+    if e.eastTimer > 0 then
+        e.eastTimer = e.eastTimer - 1
+    end
+    if e.westTimer > 0 then
+        e.westTimer = e.westTimer - 1
+    end
+
+    if e.northTimer > 0 and e.southTimer > 0 and e.eastTimer > 0 and e.westTimer > 0 then
+        e.spinTimer = 5
+    elseif e.spinTimer > 0 then
+        e.spinTimer = e.spinTimer - 1
     end
 end
 
----@param c MarioState
-function determine_stick_spin(c)
-    local oldAngle = 0
-    local stickRot = math.atan(c.controller.stickX, c.controller.stickY)
-    if stickRot - oldAngle > 360 then
+function check_spin(c)
+    local e = gDaveyStates[c.playerIndex]
+    if e.spinTimer > 0 then
         return true
     end
-    oldAngle = stickRot
     return false
 end
