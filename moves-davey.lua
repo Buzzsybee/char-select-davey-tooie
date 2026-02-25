@@ -63,7 +63,7 @@ function act_davey_spin_jump(m)
         end
     end
     ]]
-    
+
     common_air_action_step(m, ACT_FREEFALL_LAND, CHAR_ANIM_TWIRL, AIR_STEP_NONE)
 
     
@@ -169,6 +169,8 @@ function on_set_action_dt(m)
     end
 end
 
+---comment
+---@param m MarioState
 function update_dt_chars(m)
     init_locals(m)
 
@@ -196,13 +198,19 @@ function update_dt_chars(m)
         end
     end
 
-    if action == ACT_CROUCHING then
+    if action == ACT_CROUCHING or action == ACT_CROUCH_SLIDE or action == ACT_START_CROUCHING or action == ACT_START_CRAWLING or action == ACT_CRAWLING then
+        m.marioObj.header.gfx.scale.y = 0.5
         if buttonXpress then
             set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
         end
         if buttonYpress then
             set_mario_action(m, ACT_DAVEY_HAMMER_SWING, 0)
         end
+    end
+
+    -- waterbreathing and immunity to squishing
+    if m.waterLevel > m.pos.y or action == ACT_SQUISHED then
+        m.health = m.health + 100
     end
 end
 
