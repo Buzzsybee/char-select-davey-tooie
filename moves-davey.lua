@@ -53,7 +53,8 @@ function act_davey_spin_jump(m)
     if buttonBpress then
         set_mario_action(m, ACT_DIVE, 0)
     end
-    
+
+    --[[
     if m.vel.y < 0 then
         if buttonAdown then
             m.vel.y = -10
@@ -61,13 +62,15 @@ function act_davey_spin_jump(m)
             m.vel.y = m.vel.y + 0.9
         end
     end
+    ]]
+    
     common_air_action_step(m, ACT_FREEFALL_LAND, CHAR_ANIM_TWIRL, AIR_STEP_NONE)
 
-    set_turn_speed(0x800)
+    
 
     e.gfxAngleY = e.gfxAngleY + 0x4500
     m.marioObj.header.gfx.angle.y = e.gfxAngleY
-    
+
     m.actionTimer = m.actionTimer + 1
     return false
 end
@@ -186,8 +189,10 @@ function update_dt_chars(m)
     end
 
     if is_grounded(m) then
-        if check_spin(c) then
-            set_mario_action(m, ACT_DAVEY_SPIN, 0)
+        if not excludeGroundAttackAct[action] then
+            if check_spin(c) then
+                set_mario_action(m, ACT_DAVEY_SPIN, 0)
+            end
         end
     end
 

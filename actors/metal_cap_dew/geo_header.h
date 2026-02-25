@@ -1,0 +1,15 @@
+extern const GeoLayout metal_cap_dew_6_Cap_Anim_State_Switch_opt1[];
+extern const GeoLayout metal_cap_dew_geo[];
+extern Lights1 metal_cap_dew_frame_lights;
+extern Lights1 metal_cap_dew_glasses_lights;
+extern u8 metal_cap_dew_glassestex_rgba16[];
+extern Vtx metal_cap_dew_Metal_Cap_DL_mesh_layer_1_vtx_0[550];
+extern Gfx metal_cap_dew_Metal_Cap_DL_mesh_layer_1_tri_0[];
+extern Vtx metal_cap_dew_Metal_Cap_DL_mesh_layer_1_vtx_1[18];
+extern Gfx metal_cap_dew_Metal_Cap_DL_mesh_layer_1_tri_1[];
+extern Gfx mat_metal_cap_dew_frame[];
+extern Gfx mat_revert_metal_cap_dew_frame[];
+extern Gfx mat_metal_cap_dew_glasses[];
+extern Gfx mat_revert_metal_cap_dew_glasses[];
+extern Gfx metal_cap_dew_Metal_Cap_DL_mesh_layer_1[];
+extern Gfx metal_cap_dew_material_revert_render_settings[];

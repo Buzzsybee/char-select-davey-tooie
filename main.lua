@@ -9,8 +9,11 @@ if not _G.charSelectExists then
 end
 
 local E_MODEL_DAVEYT = smlua_model_util_get_id("daveyt_geo")
+local E_MODEL_DEW = smlua_model_util_get_id("dew_geo")
 local TEX_ICON_DAVEYT = get_texture_info("daveyt_icon")
+local TEX_ICON_DEW = get_texture_info("dew_icon")
 local DAVEYT_GRAFFITI = get_texture_info("daveytoo_graffiti")
+--local DEW_GRAFFITI = get_texture_info("dew_graffiti")
 
 local PALETTE_DAVEYT = {
     [PANTS]  = "515558",
@@ -24,6 +27,21 @@ local PALETTE_DAVEYT = {
 }
 
 _G.charSelect.character_add_palette_preset(E_MODEL_DAVEYT, PALETTE_DAVEYT)
+charSelect.character_add_palette_preset(E_MODEL_DEW, PALETTE_DAVEYT)
+
+local CAPS_DT = {
+    normal = smlua_model_util_get_id("normal_dt_geo"),
+    wing = smlua_model_util_get_id("wing_cap_dt_geo"),
+    metal = smlua_model_util_get_id("metal_cap_dt_geo"),
+    metalWing = smlua_model_util_get_id("metalwing_cap_dt_geo"),
+}
+
+local CAPS_DEW = {
+    normal = smlua_model_util_get_id("normal_dew_geo"),
+    wing = smlua_model_util_get_id("wing_cap_dew_geo"),
+    metal = smlua_model_util_get_id("metal_cap_dew_geo"),
+    metalWing = smlua_model_util_get_id("metalwing_cap_dew_geo"),
+}
 
 CHAR_DAVEY_TOOIE = _G.charSelect.character_add(
     "Davey Tooie", -- Character Name
@@ -36,3 +54,16 @@ CHAR_DAVEY_TOOIE = _G.charSelect.character_add(
     1                  -- Camera Scale
 )
 charSelect.character_add_graffiti(CHAR_DAVEY_TOOIE, DAVEYT_GRAFFITI)
+charSelect.character_add_caps(E_MODEL_DAVEYT, CAPS_DT)
+
+CHAR_DEW = _G.charSelect.character_add(
+    "Dew", -- Character Name
+    "", -- Description
+    "Honi", -- Credits
+    "9F26FC",           -- Menu Color
+    E_MODEL_DEW,       -- Character Model
+    CT_LUIGI,           -- Override Character
+    TEX_ICON_DEW, -- Life Icon
+    1                  -- Camera Scale
+)
+charSelect.character_add_caps(E_MODEL_DEW, CAPS_DEW)

@@ -43,8 +43,7 @@ jumpActs = {
     ACT_STEEP_JUMP,
     ACT_TOP_OF_POLE_JUMP,
     ACT_GROUND_POUND,
-    ACT_SPAWN_SPIN_AIRBORNE,
-    ACT_SPAWN_NO_SPIN_AIRBORNE,
+    ACT_DAVEY_SPIN_JUMP,
 }
 jumpAct = {}
 for _, v in ipairs(jumpActs) do

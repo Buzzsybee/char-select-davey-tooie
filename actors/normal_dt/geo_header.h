@@ -1,0 +1,10 @@
+extern const GeoLayout normal_dt_6_Cap_Anim_State_Switch_opt1[];
+extern const GeoLayout normal_dt_geo[];
+extern Lights1 normal_dt_clip_lights;
+extern u8 normal_dt_CLIP_rgba16[];
+extern Vtx normal_dt_Cap_DL_mesh_layer_1_vtx_0[32];
+extern Gfx normal_dt_Cap_DL_mesh_layer_1_tri_0[];
+extern Gfx mat_normal_dt_clip[];
+extern Gfx mat_revert_normal_dt_clip[];
+extern Gfx normal_dt_Cap_DL_mesh_layer_1[];
+extern Gfx normal_dt_material_revert_render_settings[];
