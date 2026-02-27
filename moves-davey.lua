@@ -124,8 +124,12 @@ function act_davey_item(m)
     end
 
     m.actionTimer = m.actionTimer + 1
+    
 end
 
+---
+--- comment
+--- @param m MarioState
 function act_davey_hammer_swing(m)
     init_locals(m)
     if m.actionTimer == 0 then
@@ -141,6 +145,7 @@ function act_davey_hammer_swing(m)
         spawn_particle(m, PARTICLE_MIST_CIRCLE)
         spawn_particle(m, PARTICLE_HORIZONTAL_STAR)
         play_sound(SOUND_ACTION_METAL_HEAVY_LANDING, m.marioObj.header.gfx.cameraToObject)
+        m.flags = m.flags | MARIO_PUNCHING
     end
     if m.actionTimer == 15 then return set_mario_action(m, ACT_IDLE, 0) end
 
@@ -198,6 +203,7 @@ function update_dt_chars(m)
         end
     end
 
+    --made him squish down when crouchedd
     if action == ACT_CROUCHING or action == ACT_CROUCH_SLIDE or action == ACT_START_CROUCHING or action == ACT_START_CRAWLING or action == ACT_CRAWLING then
         m.marioObj.header.gfx.scale.y = 0.5
         if buttonXpress then
@@ -206,6 +212,15 @@ function update_dt_chars(m)
         if buttonYpress then
             set_mario_action(m, ACT_DAVEY_HAMMER_SWING, 0)
         end
+    end
+
+    if buttonP & R_TRIG ~= 0 then
+        set_mario_action(m, ACT_SLEEPING, 0)
+        m.actionState = 1
+    end
+    --make him sort of deflate when sleeping
+    if action == ACT_SLEEPING and m.animation == CHAR_ANIM_SLEEP_LYING then
+        m.marioObj.header.gfx.scale.y = 0.5
     end
 
     -- waterbreathing and immunity to squishing
