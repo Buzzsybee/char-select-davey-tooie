@@ -133,21 +133,22 @@ end
 function act_davey_hammer_swing(m)
     init_locals(m)
     if m.actionTimer == 0 then
-        play_character_sound(m, CHAR_SOUND_YAHOO)
+        set_character_animation(m, CHAR_ANIM_BREAKDANCE)
+        smlua_anim_util_set_animation(m.marioObj, 'DT_HAMMER')
     end
-    set_mario_animation(m, CHAR_ANIM_FIRST_PUNCH)
 
     m.marioBodyState.handState = MARIO_HAND_PEACE_SIGN
 
     local step = perform_ground_step(m)
 
-    if m.actionTimer == 4 then
+    if m.actionTimer == 8 then
+        play_character_sound(m, CHAR_SOUND_YAHOO)
         spawn_particle(m, PARTICLE_MIST_CIRCLE)
         spawn_particle(m, PARTICLE_HORIZONTAL_STAR)
         play_sound(SOUND_ACTION_METAL_HEAVY_LANDING, m.marioObj.header.gfx.cameraToObject)
         m.flags = m.flags | MARIO_PUNCHING
     end
-    if m.actionTimer == 15 then return set_mario_action(m, ACT_IDLE, 0) end
+    if m.actionTimer == 13 then return set_mario_action(m, ACT_IDLE, 0) end
 
     m.actionTimer = m.actionTimer + 1
 end
@@ -203,24 +204,13 @@ function update_dt_chars(m)
         end
     end
 
-    --made him squish down when crouchedd
     if action == ACT_CROUCHING or action == ACT_CROUCH_SLIDE or action == ACT_START_CROUCHING or action == ACT_START_CRAWLING or action == ACT_CRAWLING then
-        m.marioObj.header.gfx.scale.y = 0.5
         if buttonXpress then
             set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
         end
         if buttonYpress then
             set_mario_action(m, ACT_DAVEY_HAMMER_SWING, 0)
         end
-    end
-
-    if buttonP & R_TRIG ~= 0 then
-        set_mario_action(m, ACT_SLEEPING, 0)
-        m.actionState = 1
-    end
-    --make him sort of deflate when sleeping
-    if action == ACT_SLEEPING and m.animation == CHAR_ANIM_SLEEP_LYING then
-        m.marioObj.header.gfx.scale.y = 0.5
     end
 
     -- waterbreathing and immunity to squishing
