@@ -179,6 +179,7 @@ end
 ---@param m MarioState
 function update_dt_chars(m)
     init_locals(m)
+    m.marioBodyState.torsoAngle.x = 0
 
     e.actionTick = e.actionTick + 1
     if e.prevFrameAction ~= m.action then
