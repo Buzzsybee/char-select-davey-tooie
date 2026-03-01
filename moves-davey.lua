@@ -137,18 +137,20 @@ function act_davey_hammer_swing(m)
         smlua_anim_util_set_animation(m.marioObj, 'DT_HAMMER')
     end
 
+    mario_set_forward_vel(m, approach_f32(e.lastSpeed, 0, 1, 1))
     m.marioBodyState.handState = MARIO_HAND_PEACE_SIGN
 
     local step = perform_ground_step(m)
 
-    if m.actionTimer == 8 then
+    if m.actionTimer == 15 then
         play_character_sound(m, CHAR_SOUND_YAHOO)
         spawn_particle(m, PARTICLE_MIST_CIRCLE)
         spawn_particle(m, PARTICLE_HORIZONTAL_STAR)
         play_sound(SOUND_ACTION_METAL_HEAVY_LANDING, m.marioObj.header.gfx.cameraToObject)
+        cur_obj_shake_screen(SHAKE_GROUND_POUND)
         m.flags = m.flags | MARIO_PUNCHING
     end
-    if m.actionTimer == 13 then return set_mario_action(m, ACT_IDLE, 0) end
+    if m.actionTimer == 35 then return set_mario_action(m, ACT_IDLE, 0) end
 
     m.actionTimer = m.actionTimer + 1
 end
@@ -172,6 +174,10 @@ function on_set_action_dt(m)
 
     if m.action == ACT_DAVEY_SPIN_JUMP then
         m.vel.y = 80
+    end
+
+    if action == ACT_PUNCHING or action == ACT_MOVE_PUNCHING then
+        set_mario_action(m, ACT_DAVEY_HAMMER_SWING, 0)
     end
 end
 
@@ -209,9 +215,7 @@ function update_dt_chars(m)
         if buttonXpress then
             set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
         end
-        if buttonYpress then
-            set_mario_action(m, ACT_DAVEY_HAMMER_SWING, 0)
-        end
+
     end
 
     -- waterbreathing and immunity to squishing
