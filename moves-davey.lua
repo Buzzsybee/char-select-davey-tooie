@@ -7,6 +7,62 @@ local function davey_gravity(m)
         m.vel.y = m.vel.y + 20
     end
 end
+-- will try this custom object from wapeach extrachars (im truly learning new styff heres)
+---@param o Object
+local function bhv_hammer_init(o)
+    o.oFlags = OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_SET_FACE_ANGLE_TO_MOVE_ANGLE
+
+    o.oDamageOrCoinValue = 4
+    o.oNumLootCoins = 0
+    o.oHealth = 0
+    o.hitboxRadius = 100
+    o.hitboxHeight = 80
+    o.hurtboxRadius = 60
+    o.hurtboxHeight = 80
+    o.hitboxDownOffset = 0
+    o.oInteractType = 0
+
+    cur_obj_scale(1)
+    cur_obj_become_tangible()
+
+    network_init_object(o, true, {})
+end
+
+---@param o Object
+local function bhv_hammer_loop(o)
+    local m = gMarioStates[network_local_index_from_global(o.globalPlayerIndex)]
+
+    obj_process_attacks(o, bhvAttacks)
+
+    if o.oTimer == 7 then
+        obj_mark_for_deletion(o)
+    end
+end
+
+local id_bhvHammer = hook_behavior(nil, OBJ_LIST_DESTRUCTIVE, true, bhv_hammer_init, bhv_hammer_loop, "bhvDaveyHammer")
+
+-- from amy sonic chars, :3
+function davey_hammer_pound(m)
+    local v = {
+        x = m.pos.x + sins(m.faceAngle.y) * 130,
+        y = m.pos.y,
+        z = m.pos.z + coss(m.faceAngle.y) * 130
+    }
+    spawn_non_sync_object(id_bhvHorStarParticleSpawner, E_MODEL_NONE, v.x, v.y, v.z, nil)
+    spawn_non_sync_object(id_bhvMistCircParticleSpawner, E_MODEL_NONE, v.x, v.y, v.z, nil)
+    if m.playerIndex == 0 then
+            local handPos = gVec3fZero()
+            if not get_mario_anim_part_pos(m, MARIO_ANIM_PART_RIGHT_HAND, handPos) then
+                vec3f_copy(handPos, m.pos)
+            end
+            spawn_sync_object(id_bhvHammer, E_MODEL_NONE, v.x, v.y + 30, v.z, function(o)
+                o.globalPlayerIndex = m.marioObj.globalPlayerIndex
+            end)
+        end
+    play_mario_heavy_landing_sound(m, SOUND_ACTION_TERRAIN_HEAVY_LANDING)
+    cur_obj_shake_screen(SHAKE_POS_MEDIUM)
+end
+
 
 ACT_DAVEY_SPIN = allocate_mario_action(ACT_FLAG_MOVING)
 ACT_DAVEY_SPIN_JUMP = allocate_mario_action(ACT_FLAG_MOVING | ACT_FLAG_AIR)
@@ -135,6 +191,7 @@ function act_davey_hammer_swing(m)
     if m.actionTimer == 0 then
         set_character_animation(m, CHAR_ANIM_BREAKDANCE)
         smlua_anim_util_set_animation(m.marioObj, 'DT_HAMMER')
+        play_character_sound(m, CHAR_SOUND_HRMM)
     end
 
     mario_set_forward_vel(m, approach_f32(e.lastSpeed, 0, 1, 1))
@@ -142,15 +199,12 @@ function act_davey_hammer_swing(m)
 
     local step = perform_ground_step(m)
 
-    if m.actionTimer == 15 then
-        play_character_sound(m, CHAR_SOUND_YAHOO)
-        spawn_particle(m, PARTICLE_MIST_CIRCLE)
-        spawn_particle(m, PARTICLE_HORIZONTAL_STAR)
-        play_sound(SOUND_ACTION_METAL_HEAVY_LANDING, m.marioObj.header.gfx.cameraToObject)
-        cur_obj_shake_screen(SHAKE_GROUND_POUND)
-        m.flags = m.flags | MARIO_PUNCHING
+    if m.actionTimer == 19 then
+        play_character_sound(m, CHAR_SOUND_GROUND_POUND_WAH)
+        davey_hammer_pound(m)
+        m.flags = m.flags | MARIO_KICKING
     end
-    if m.actionTimer == 35 then return set_mario_action(m, ACT_IDLE, 0) end
+    if m.actionTimer == 30 then return set_mario_action(m, ACT_IDLE, 0) end
 
     m.actionTimer = m.actionTimer + 1
 end
@@ -167,6 +221,21 @@ function before_update_dt(m)
     if m.action == ACT_DAVEY_SPIN then
         mario_set_forward_vel(m, e.lastSpeed)
     end
+
+    -- possible idle fix?
+    local anim = animsDT[m.marioObj.header.gfx.animInfo.animID]
+    if anim then
+        smlua_anim_util_set_animation(m.marioObj, anim)
+
+        if m.action == ACT_IDLE then
+            m.actionTimer = m.actionTimer + 1
+            if m.actionTimer > 900 then
+                m.actionState = 3
+            else
+                m.actionState = 0
+            end
+        end
+    end
 end
 
 function on_set_action_dt(m)
@@ -176,7 +245,7 @@ function on_set_action_dt(m)
         m.vel.y = 80
     end
 
-    if action == ACT_PUNCHING or action == ACT_MOVE_PUNCHING then
+    if (action == ACT_PUNCHING or action == ACT_MOVE_PUNCHING) and m.prevAction ~= ACT_DAVEY_HAMMER_SWING then
         set_mario_action(m, ACT_DAVEY_HAMMER_SWING, 0)
     end
 end
@@ -216,6 +285,11 @@ function update_dt_chars(m)
             set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
         end
 
+    end
+    if action == ACT_DAVEY_HAMMER_SWING and m.actionTimer > 2 then
+        if buttonBpress and m.actionTimer < 15 then
+            return set_mario_action(m, ACT_PUNCHING, 0)
+        end
     end
 
     -- waterbreathing and immunity to squishing

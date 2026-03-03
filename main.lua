@@ -43,12 +43,13 @@ local CAPS_DEW = {
     metalWing = smlua_model_util_get_id("metalwing_cap_dew_geo"),
 }
 
-local animsDT = {
+animsDT = {
     [CHAR_ANIM_RUNNING] = 'DT_RUN',
     --IDLES normalize to the same idle since no wanna head turn
     [CHAR_ANIM_IDLE_HEAD_CENTER] = 'DT_IDLE',
     [CHAR_ANIM_IDLE_HEAD_LEFT] = 'DT_IDLE',
     [CHAR_ANIM_IDLE_HEAD_RIGHT] = 'DT_IDLE',
+    [CHAR_ANIM_FIRST_PERSON] = 'DT_IDLE',
     [CHAR_ANIM_SLEEP_START_LYING] = 'DT_SLEEP',
     [CHAR_ANIM_SLEEP_LYING] = 'DT_SLEEP_LAID_DOWN',
     [CHAR_ANIM_SINGLE_JUMP] = 'DT_JUMP',
