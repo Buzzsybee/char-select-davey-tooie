@@ -65,6 +65,28 @@ animsDT = {
     [CHAR_ANIM_STOP_CRAWLING] = 'DT_CROUCH',
 }
 
+animsDew = {
+    --[CHAR_ANIM_RUNNING] = 'DT_RUN',
+    --IDLES normalize to the same idle since no wanna head turn
+    [CHAR_ANIM_IDLE_HEAD_CENTER] = 'DT_IDLE',
+    [CHAR_ANIM_IDLE_HEAD_LEFT] = 'DT_IDLE',
+    [CHAR_ANIM_IDLE_HEAD_RIGHT] = 'DT_IDLE',
+    [CHAR_ANIM_FIRST_PERSON] = 'DT_IDLE',
+    [CHAR_ANIM_SLEEP_START_LYING] = 'DT_SLEEP',
+    [CHAR_ANIM_SLEEP_LYING] = 'DT_SLEEP_LAID_DOWN',
+    [CHAR_ANIM_SINGLE_JUMP] = 'DT_JUMP',
+    --[CHAR_ANIM_DOUBLE_JUMP_RISE] = 'DT_JUMP',
+    --[CHAR_ANIM_DOUBLE_JUMP_FALL] = 'DT_DOUBLE',
+    [CHAR_ANIM_TRIPLE_JUMP] = 'DT_TRIPLE',
+    --CROUCH also normalized
+    [CHAR_ANIM_CROUCHING] = 'DT_CROUCH',
+    [CHAR_ANIM_START_CROUCHING] = 'DT_CROUCH_START',
+    [CHAR_ANIM_STOP_CROUCHING] = 'DT_CROUCH_ENDS',
+    [CHAR_ANIM_CRAWLING] = 'DT_WADDLE',
+    [CHAR_ANIM_START_CRAWLING] = 'DT_CROUCH_ENDS',
+    [CHAR_ANIM_STOP_CRAWLING] = 'DT_CROUCH',
+}
+
 
 CHAR_DAVEY_TOOIE = _G.charSelect.character_add(
     "Davey Tooie", -- Character Name
@@ -79,6 +101,7 @@ CHAR_DAVEY_TOOIE = _G.charSelect.character_add(
 charSelect.character_add_graffiti(CHAR_DAVEY_TOOIE, DAVEYT_GRAFFITI)
 charSelect.character_add_caps(E_MODEL_DAVEYT, CAPS_DT)
 charSelect.character_add_animations(E_MODEL_DAVEYT, animsDT)
+charSelect.character_add_voice(E_MODEL_DAVEYT, VOICETABLE_TOOIE)
 
 CHAR_DEW = _G.charSelect.character_add(
     "Dew", -- Character Name

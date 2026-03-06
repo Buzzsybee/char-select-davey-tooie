@@ -1,5 +1,67 @@
 if not charSelectExists then return end
 
+-- items from pool :3
+goomba = 1
+bobomb = 2
+koopa = 3
+koopashell = 4
+boo = 5
+bully = 6
+chuckya = 7
+whomp = 8
+flyguy = 9
+amp = 10
+plant = 11
+
+-- bhv and model from the pool items
+local daveyItemPool = {
+    [goomba] = {
+        bhv = id_bhvGoomba,
+        model = E_MODEL_GOOMBA
+    },
+    [bobomb] = {
+        bhv = id_bhvBobomb,
+        model = E_MODEL_BLACK_BOBOMB
+    },
+    [koopa] ={
+        bhv= id_bhvKoopa,
+        model = E_MODEL_KOOPA_WITH_SHELL
+    },
+    [koopashell] = {
+        bhv = id_bhvKoopaShell,
+        model = E_MODEL_KOOPA_SHELL
+    },
+    [boo] = {
+        bhv = id_bhvBoo,
+        model = E_MODEL_BOO
+    },
+    [bully] = {
+        bhv = id_bhvSmallBully,
+        model = E_MODEL_BULLY
+    },
+    [chuckya] = {
+        bhv = id_bhvChuckya,
+        model = E_MODEL_CHUCKYA
+    },
+
+}
+
+---comment
+---@param obj number
+function spawn_item_from_pool(obj)
+    local v = {
+        x = c.pos.x + sins(c.faceAngle.y),
+        y = c.pos.y,
+        z = c.pos.z + coss(c.faceAngle.y)
+    }
+
+    local object = daveyItemPool[obj]
+    local bhv = object.bhv
+    local model = object.model
+
+    spawn_sync_object(bhv,model, v.x, v.y, v.z, nil)
+end
+
 local function davey_gravity(m)
     init_locals(m)
 
@@ -51,14 +113,10 @@ function davey_hammer_pound(m)
     spawn_non_sync_object(id_bhvHorStarParticleSpawner, E_MODEL_NONE, v.x, v.y, v.z, nil)
     spawn_non_sync_object(id_bhvMistCircParticleSpawner, E_MODEL_NONE, v.x, v.y, v.z, nil)
     if m.playerIndex == 0 then
-            local handPos = gVec3fZero()
-            if not get_mario_anim_part_pos(m, MARIO_ANIM_PART_RIGHT_HAND, handPos) then
-                vec3f_copy(handPos, m.pos)
-            end
-            spawn_sync_object(id_bhvHammer, E_MODEL_NONE, v.x, v.y + 30, v.z, function(o)
-                o.globalPlayerIndex = m.marioObj.globalPlayerIndex
-            end)
-        end
+        spawn_sync_object(id_bhvHammer, E_MODEL_NONE, v.x, v.y + 30, v.z, function(o)
+            o.globalPlayerIndex = m.marioObj.globalPlayerIndex
+        end)
+    end
     play_mario_heavy_landing_sound(m, SOUND_ACTION_TERRAIN_HEAVY_LANDING)
     cur_obj_shake_screen(SHAKE_POS_MEDIUM)
 end
@@ -166,21 +224,29 @@ function act_davey_drill_down(m)
     return false
 end
 
+local function update_random_index()
+    randoitem = math.random(1,#daveyItemPool)
+end
+hook_event(HOOK_MARIO_UPDATE, update_random_index)
+
 function act_davey_item(m)
     init_locals(m)
 
     if m.actionTimer == 0 then
-        set_mario_animation(m, CHAR_ANIM_THROW_LIGHT_OBJECT)
+        set_mario_animation(m, CHAR_ANIM_BACKFLIP)
+        m.vel.y = 80
+        m.invincTimer = 10
+        spawn_item_from_pool(randoitem) -- spawn_item_from_pool(3) doesnt work either
+        spawn_particle(m, PARTICLE_MIST_CIRCLE)
     end
 
-    local step = perform_ground_step(m)
+    local step = perform_air_step(m, 0)
 
     if m.actionTimer > 10 then
-        set_mario_action(m, ACT_IDLE, 0)
+        set_mario_action(m, ACT_FREEFALL, 0)
     end
 
     m.actionTimer = m.actionTimer + 1
-    
 end
 
 ---
@@ -255,6 +321,7 @@ end
 function update_dt_chars(m)
     init_locals(m)
     m.marioBodyState.torsoAngle.x = 0
+    djui_chat_message_create(tostring(randoitem))
 
     e.actionTick = e.actionTick + 1
     if e.prevFrameAction ~= m.action then
