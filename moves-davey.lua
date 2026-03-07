@@ -12,6 +12,17 @@ whomp = 8
 flyguy = 9
 amp = 10
 plant = 11
+chair = 12
+piano = 13
+spiny = 14
+box = 15
+wingcap = 16
+metalcap = 17
+vanishcap = 18
+chiefchilly = 19
+bowser = 20
+mine = 21
+
 
 -- bhv and model from the pool items
 local daveyItemPool = {
@@ -42,6 +53,62 @@ local daveyItemPool = {
     [chuckya] = {
         bhv = id_bhvChuckya,
         model = E_MODEL_CHUCKYA
+    },
+    [whomp] = {
+        bhv = id_bhvSmallWhomp,
+        model = E_MODEL_WHOMP
+    },
+    [flyguy] = {
+        bhv = id_bhvFlyGuy,
+        model = E_MODEL_FLYGUY
+    },
+    [amp] = {
+        bhv = id_bhvHomingAmp,
+        model = E_MODEL_AMP
+    },
+    [plant] = {
+        bhv = id_bhvPiranhaPlant,
+        model = E_MODEL_PIRANHA_PLANT
+    },
+    [chair] = {
+        bhv = id_bhvHauntedChair,
+        model = E_MODEL_HAUNTED_CHAIR
+    },
+    [piano] = {
+        bhv = id_bhvMadPiano,
+        model = E_MODEL_MAD_PIANO
+    },
+    [spiny] = {
+        bhv = id_bhvSpiny,
+        model = E_MODEL_SPINY
+    },
+    [box] = {
+        bhv = id_bhvBreakableBoxSmall,
+        model = E_MODEL_BREAKABLE_BOX_SMALL
+    },
+    [wingcap] = {
+        bhv = id_bhvWingCap,
+        model = E_MODEL_MARIOS_WING_CAP
+    },
+    [metalcap] = {
+        bhv = id_bhvMetalCap,
+        model = E_MODEL_MARIOS_METAL_CAP
+    },
+    [vanishcap] = {
+        bhv = id_bhvVanishCap,
+        model = E_MODEL_MARIOS_CAP
+    },
+    [chiefchilly] = {
+        bhv = id_bhvBigChillBully,
+        model = E_MODEL_BIG_CHILL_BULLY
+    },
+    [bowser] = {
+        bhv = id_bhvBowser,
+        model = E_MODEL_BOWSER
+    },
+    [mine] = {
+        bhv = id_bhvBowserBomb,
+        model = E_MODEL_BOWSER_BOMB
     },
 
 }
@@ -236,7 +303,7 @@ function act_davey_item(m)
         set_mario_animation(m, CHAR_ANIM_BACKFLIP)
         m.vel.y = 80
         m.invincTimer = 10
-        spawn_item_from_pool(randoitem) -- spawn_item_from_pool(3) doesnt work either
+        spawn_item_from_pool(randoitem)
         spawn_particle(m, PARTICLE_MIST_CIRCLE)
     end
 
