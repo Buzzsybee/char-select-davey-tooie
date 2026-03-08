@@ -420,6 +420,9 @@ function update_dt_chars(m)
     if m.waterLevel > m.pos.y or action == ACT_SQUISHED then
         m.health = m.health + 100
     end
+
+    if damagedAct[action] then m.marioBodyState.eyeState = MARIO_EYES_DEAD end
+    if starAct[action] then m.marioBodyState.eyeState = MARIO_EYES_LOOK_UP end
 end
 
 charSelect.character_hook_moveset(CHAR_DAVEY_TOOIE, HOOK_BEFORE_MARIO_UPDATE, before_update_dt)

@@ -13,7 +13,7 @@ local E_MODEL_DEW = smlua_model_util_get_id("dew_geo")
 local TEX_ICON_DAVEYT = get_texture_info("daveyt_icon")
 local TEX_ICON_DEW = get_texture_info("dew_icon")
 local DAVEYT_GRAFFITI = get_texture_info("daveytoo_graffiti")
---local DEW_GRAFFITI = get_texture_info("dew_graffiti")
+local DEW_GRAFFITI = get_texture_info("dew_graffiti")
 
 local PALETTE_DAVEYT = {
     [PANTS]  = "515558",
@@ -206,3 +206,4 @@ CHAR_DEW = _G.charSelect.character_add(
 charSelect.character_add_caps(E_MODEL_DEW, CAPS_DEW)
 charSelect.character_add_voice(E_MODEL_DEW, VOICETABLE_DEW)
 charSelect.character_add_animations(E_MODEL_DEW, animsDew)
+charSelect.character_add_graffiti(CHAR_DEW, DEW_GRAFFITI)

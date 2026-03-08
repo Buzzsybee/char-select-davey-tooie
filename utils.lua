@@ -99,6 +99,35 @@ for _, v in ipairs(excludeGroundAttackActs) do
     excludeGroundAttackAct[v] = true
 end
 
+damagedActs = {
+    ACT_SOFT_BACKWARD_GROUND_KB,
+    ACT_BACKWARD_AIR_KB,
+    ACT_BACKWARD_GROUND_KB,
+    ACT_BACKWARD_WATER_KB,
+    ACT_FORWARD_WATER_KB,
+    ACT_HARD_BACKWARD_AIR_KB,
+    ACT_HARD_FORWARD_AIR_KB,
+    ACT_DEATH_ON_BACK,
+    ACT_THROWN_BACKWARD,
+    ACT_THROWN_FORWARD,
+}
+
+damagedAct = {}
+for _, v in ipairs(damagedActs) do
+    damagedAct[v] = true
+end
+
+starActs = {
+    ACT_STAR_DANCE_EXIT,
+    ACT_STAR_DANCE_NO_EXIT,
+    ACT_STAR_DANCE_WATER,
+    ACT_JUMBO_STAR_CUTSCENE
+}
+starAct = {}
+for _, v in ipairs(starActs) do
+    starAct[v] = true
+end
+
 function convert_s16(num)
     local min = -32768
     local max = 32767
