@@ -15,12 +15,10 @@ function dew_staff_pound(m)
         z = m.pos.z + coss(m.faceAngle.y) * 130
     }
     spawn_non_sync_object(id_bhvSparkleParticleSpawner, E_MODEL_NONE, v.x, v.y, v.z, nil)
-    spawn_non_sync_object(id_bhvHorStarParticleSpawner, E_MODEL_NONE, v.x, v.y, v.z, nil)
+    spawn_non_sync_object(id_bhvVertStarParticleSpawner, E_MODEL_NONE, v.x, v.y, v.z, nil)
     if m.playerIndex == 0 then
         spawn_sync_object(id_bhvFlameMovingForwardGrowing, E_MODEL_RED_FLAME, v.x, v.y + 30, v.z, function(o)
             o.globalPlayerIndex = m.marioObj.globalPlayerIndex
-
-            o.oFlameScale = 100
         end)
     end
 end
