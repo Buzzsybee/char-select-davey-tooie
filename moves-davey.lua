@@ -14,14 +14,12 @@ amp = 10
 plant = 11
 chair = 12
 piano = 13
-spiny = 14
-box = 15
-wingcap = 16
-metalcap = 17
-vanishcap = 18
-chiefchilly = 19
-bowser = 20
-mine = 21
+--spiny = 0
+box = 14
+wingcap = 15
+metalcap = 16
+vanishcap = 17
+-- bluecoin = 0
 
 
 -- bhv and model from the pool items
@@ -79,10 +77,12 @@ local daveyItemPool = {
         bhv = id_bhvMadPiano,
         model = E_MODEL_MAD_PIANO
     },
+    --[[
     [spiny] = {
         bhv = id_bhvSpiny,
-        model = E_MODEL_SPINY
-    },
+        model = E_MODEL_SPINY_BALL
+    }, -- never spawns at all
+    ]]
     [box] = {
         bhv = id_bhvBreakableBoxSmall,
         model = E_MODEL_BREAKABLE_BOX_SMALL
@@ -99,15 +99,22 @@ local daveyItemPool = {
         bhv = id_bhvVanishCap,
         model = E_MODEL_MARIOS_CAP
     },
+    --[[
+    [bluecoin] = {
+        bhv = id_bhvMovingBlueCoin,
+        model = E_MODEL_BLUE_COIN
+    } -- gets collected instantly regardless
+    ]]
+    
 }
 
 ---comment
 ---@param obj Object
 function spawn_item_from_pool(obj)
     local v = {
-        x = c.pos.x + sins(c.faceAngle.y),
+        x = c.pos.x + sins(c.faceAngle.y) * -130,
         y = c.pos.y,
-        z = c.pos.z + coss(c.faceAngle.y)
+        z = c.pos.z + coss(c.faceAngle.y) * -130
     }
 
     local object = daveyItemPool[obj]
