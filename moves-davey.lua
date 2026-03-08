@@ -36,7 +36,8 @@ local daveyItemPool = {
     },
     [koopa] ={
         bhv= id_bhvKoopa,
-        model = E_MODEL_KOOPA_WITH_SHELL
+        model = E_MODEL_KOOPA_WITH_SHELL,
+        params = 0
     },
     [koopashell] = {
         bhv = id_bhvKoopaShell,
@@ -63,7 +64,7 @@ local daveyItemPool = {
         model = E_MODEL_FLYGUY
     },
     [amp] = {
-        bhv = id_bhvHomingAmp,
+        bhv = id_bhvCirclingAmp,
         model = E_MODEL_AMP
     },
     [plant] = {
@@ -98,23 +99,10 @@ local daveyItemPool = {
         bhv = id_bhvVanishCap,
         model = E_MODEL_MARIOS_CAP
     },
-    [chiefchilly] = {
-        bhv = id_bhvBigChillBully,
-        model = E_MODEL_BIG_CHILL_BULLY
-    },
-    [bowser] = {
-        bhv = id_bhvBowser,
-        model = E_MODEL_BOWSER
-    },
-    [mine] = {
-        bhv = id_bhvBowserBomb,
-        model = E_MODEL_BOWSER_BOMB
-    },
-
 }
 
 ---comment
----@param obj number
+---@param obj Object
 function spawn_item_from_pool(obj)
     local v = {
         x = c.pos.x + sins(c.faceAngle.y),
@@ -126,7 +114,9 @@ function spawn_item_from_pool(obj)
     local bhv = object.bhv
     local model = object.model
 
-    spawn_sync_object(bhv,model, v.x, v.y, v.z, nil)
+    spawn_sync_object(bhv,model, v.x, v.y, v.z, function(o) 
+        if object.params then o.oBehParams = object.params else return end
+    end)
 end
 
 local function davey_gravity(m)
@@ -301,11 +291,12 @@ function act_davey_item(m)
 
     if m.actionTimer == 0 then
         set_mario_animation(m, CHAR_ANIM_BACKFLIP)
-        m.vel.y = 80
+        m.vel.y = 60
         m.invincTimer = 10
         spawn_item_from_pool(randoitem)
         spawn_particle(m, PARTICLE_MIST_CIRCLE)
     end
+    if buttonBpress then set_mario_action(m, ACT_DIVE, 0) end
 
     local step = perform_air_step(m, 0)
 
@@ -413,12 +404,11 @@ function update_dt_chars(m)
             end
         end
     end
-
+    
     if action == ACT_CROUCHING or action == ACT_CROUCH_SLIDE or action == ACT_START_CROUCHING or action == ACT_START_CRAWLING or action == ACT_CRAWLING then
         if buttonXpress then
             set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
         end
-
     end
     if action == ACT_DAVEY_HAMMER_SWING and m.actionTimer > 2 then
         if buttonBpress and m.actionTimer < 15 then
