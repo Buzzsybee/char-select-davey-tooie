@@ -120,6 +120,7 @@ function update_dew(m)
     end
 
     if m.marioBodyState.capState == 1 and action ~= ACT_SLEEPING then m.marioBodyState.eyeState = MARIO_EYES_LOOK_UP end
+    if damagedAct[action] then m.marioBodyState.eyeState = MARIO_EYES_DEAD end
 end
 
 charSelect.character_hook_moveset(CHAR_DEW, HOOK_BEFORE_MARIO_UPDATE, before_update_dew)

@@ -386,7 +386,6 @@ end
 function update_dt_chars(m)
     init_locals(m)
     m.marioBodyState.torsoAngle.x = 0
-    djui_chat_message_create(tostring(randoitem))
 
     e.actionTick = e.actionTick + 1
     if e.prevFrameAction ~= m.action then
@@ -429,7 +428,16 @@ function update_dt_chars(m)
     end
 
     if damagedAct[action] then m.marioBodyState.eyeState = MARIO_EYES_DEAD end
-    if starAct[action] then m.marioBodyState.eyeState = MARIO_EYES_LOOK_UP end
+    if starAct[action] then 
+        local frame = m.marioObj.header.gfx.animInfo.animFrame
+
+        m.marioBodyState.eyeState = MARIO_EYES_LOOK_UP
+        if frame < 30 then 
+            m.marioBodyState.handState = MARIO_HAND_PEACE_SIGN
+        else
+            m.marioBodyState.handState = MARIO_HAND_FISTS
+        end
+     end
 end
 
 charSelect.character_hook_moveset(CHAR_DAVEY_TOOIE, HOOK_BEFORE_MARIO_UPDATE, before_update_dt)
