@@ -5436,7 +5436,7 @@ Gfx dew_Right_Shoe_DL_mesh_layer_1_tri_1[] = {
 
 
 Gfx mat_dew_sweater_001[] = {
-	gsSPSetLights1(dew_sweater_001_lights),
+	gsSPCopyLightsPlayerPart(SHIRT),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsDPSetAlphaDither(G_AD_NOISE),
@@ -5518,7 +5518,7 @@ Gfx mat_revert_dew_Open_Eyes__SKIN_[] = {
 
 Gfx mat_dew_hair_001[] = {
 	gsSPClearGeometryMode(G_CULL_BACK),
-	gsSPSetLights1(dew_hair_001_lights),
+	gsSPCopyLightsPlayerPart(HAIR),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsDPSetAlphaDither(G_AD_NOISE),
@@ -5788,7 +5788,7 @@ Gfx mat_revert_dew_skin[] = {
 };
 
 Gfx mat_dew_dewhammerhead2[] = {
-	gsSPSetLights1(dew_dewhammerhead2_lights),
+	gsSPCopyLightsPlayerPart(EMBLEM),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsDPSetAlphaDither(G_AD_NOISE),
@@ -5803,7 +5803,7 @@ Gfx mat_revert_dew_dewhammerhead2[] = {
 };
 
 Gfx mat_dew_dewhammerhead1[] = {
-	gsSPSetLights1(dew_dewhammerhead1_lights),
+	gsSPCopyLightsPlayerPart(GLOVES),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsDPSetAlphaDither(G_AD_NOISE),
@@ -5818,7 +5818,7 @@ Gfx mat_revert_dew_dewhammerhead1[] = {
 };
 
 Gfx mat_dew_pants_001[] = {
-	gsSPSetLights1(dew_pants_001_lights),
+	gsSPCopyLightsPlayerPart(PANTS),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsDPSetAlphaDither(G_AD_NOISE),
@@ -5833,7 +5833,7 @@ Gfx mat_revert_dew_pants_001[] = {
 };
 
 Gfx mat_dew_socks_001[] = {
-	gsSPSetLights1(dew_socks_001_lights),
+	gsSPCopyLightsPlayerPart(GLOVES),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsDPSetAlphaDither(G_AD_NOISE),
@@ -5848,7 +5848,7 @@ Gfx mat_revert_dew_socks_001[] = {
 };
 
 Gfx mat_dew_shoes_001[] = {
-	gsSPSetLights1(dew_shoes_001_lights),
+	gsSPCopyLightsPlayerPart(SHOES),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsDPSetAlphaDither(G_AD_NOISE),

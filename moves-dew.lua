@@ -4,7 +4,7 @@ local function dew_gravity(m)
     init_locals(m)
 
     if jumpAct[m.action] and e.actionTick == 0 then
-        m.vel.y = m.vel.y + 10
+        m.vel.y = m.vel.y + 5
     end
 end
 
@@ -54,7 +54,7 @@ function on_set_action_dew(m)
     init_locals(m)
 
     if m.action == ACT_DAVEY_SPIN_JUMP then
-        m.vel.y = 80
+        m.vel.y = 85
     end
 
     if (action == ACT_PUNCHING or action == ACT_MOVE_PUNCHING) and m.prevAction ~= ACT_DEW_STAFF_SWING then

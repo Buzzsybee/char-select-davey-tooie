@@ -1,5 +1,5 @@
--- name: [CS] Davey Tooie
--- description:
+-- name: [CS] \\#BAD5EE\\Davey Tooie
+-- description: \\#DCDCDC\\Play as\\#BAD5EE\\ The Tooie\\#DCDCDC\\ and...\\#8DD1C7\\ somebody else\\#DCDCDC\\.
 
 local TEXT_MOD_NAME = "[CS] Davey Tooie"
 
@@ -10,24 +10,12 @@ end
 
 local E_MODEL_DAVEYT = smlua_model_util_get_id("daveyt_geo")
 local E_MODEL_DEW = smlua_model_util_get_id("dew_geo")
+
 local TEX_ICON_DAVEYT = get_texture_info("daveyt_icon")
 local TEX_ICON_DEW = get_texture_info("dew_icon")
+
 local DAVEYT_GRAFFITI = get_texture_info("daveytoo_graffiti")
 local DEW_GRAFFITI = get_texture_info("dew_graffiti")
-
-local PALETTE_DAVEYT = {
-    [PANTS]  = "515558",
-    [SHIRT]  = "91B3D2",
-    [GLOVES] = "FFFFFF",
-    [SHOES]  = "8DB8EE",
-    [HAIR]   = "7D664A",
-    [SKIN]   = "FFE1C2",
-    [CAP]    = "FFCE01",
-	[EMBLEM] = "8B32A2"
-}
-
-_G.charSelect.character_add_palette_preset(E_MODEL_DAVEYT, PALETTE_DAVEYT)
-charSelect.character_add_palette_preset(E_MODEL_DEW, PALETTE_DAVEYT)
 
 local CAPS_DT = {
     normal = smlua_model_util_get_id("normal_dt_geo"),
@@ -177,17 +165,180 @@ VOICETABLE_DEW = {
     [CHAR_SOUND_YAH_WAH_HOO] = {'dew_yah1.ogg', 'dew_yah2.ogg', 'dew_yah3.ogg', 'dew_yah4.ogg'},
 }
 
+local PALETTES_DAVEY = {
+    {
+        name = "Davey L. Tooie",
+        model = smlua_model_util_get_id("daveyt_geo"),
+        palettes = {
+            {
+                name = "Tried and True Tooie",
+                [PANTS]  = "515558",
+				[SHIRT]  = "91B3D2",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "687E9B",
+				[HAIR]   = "7D664A",
+				[SKIN]   = "FFE1C2",
+				[CAP]    = "FFCF00",
+				[EMBLEM] = "8B32A2"
+            },
+            {
+                name = "Tried and True Tooie",
+                [PANTS]  = "515558",
+				[SHIRT]  = "91B3D2",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "687E9B",
+				[HAIR]   = "7D664A",
+				[SKIN]   = "FFE1C2",
+				[CAP]    = "FFCF00",
+				[EMBLEM] = "8B32A2"
+            },
+			{
+                name = "Tried and True Tooie",
+                [PANTS]  = "515558",
+				[SHIRT]  = "91B3D2",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "687E9B",
+				[HAIR]   = "7D664A",
+				[SKIN]   = "FFE1C2",
+				[CAP]    = "FFCF00",
+				[EMBLEM] = "8B32A2"
+            },
+			{
+                name = "Tried and True Tooie",
+                [PANTS]  = "515558",
+				[SHIRT]  = "91B3D2",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "687E9B",
+				[HAIR]   = "7D664A",
+				[SKIN]   = "FFE1C2",
+				[CAP]    = "FFCF00",
+				[EMBLEM] = "8B32A2"
+            },
+			{
+                name = "Tried and True Tooie",
+                [PANTS]  = "515558",
+				[SHIRT]  = "91B3D2",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "687E9B",
+				[HAIR]   = "7D664A",
+				[SKIN]   = "FFE1C2",
+				[CAP]    = "FFCF00",
+				[EMBLEM] = "8B32A2"
+            },
+			{
+                name = "Tried and True Tooie",
+                [PANTS]  = "515558",
+				[SHIRT]  = "91B3D2",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "687E9B",
+				[HAIR]   = "7D664A",
+				[SKIN]   = "FFE1C2",
+				[CAP]    = "FFCF00",
+				[EMBLEM] = "8B32A2"
+            }
+        }
+    }
+}
+
+local PALETTES_DEW = {
+    {
+        name = "Davidew L. Minch",
+        model = smlua_model_util_get_id("dew_geo"),
+        palettes = {
+            {
+                name = "Fresh, Morning Dew",
+                [PANTS]  = "4D3745",
+				[SHIRT]  = "83C2B8",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "5B847E",
+				[HAIR]   = "664B34",
+				[SKIN]   = "F8D9B9",
+				[CAP]    = "E4F9FF",
+				[EMBLEM] = "E3CF76"
+            },
+            {
+                name = "Fresh, Morning Dew",
+                [PANTS]  = "4D3745",
+				[SHIRT]  = "83C2B8",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "5B847E",
+				[HAIR]   = "664B34",
+				[SKIN]   = "F8D9B9",
+				[CAP]    = "E4F9FF",
+				[EMBLEM] = "E3CF76"
+            },
+			{
+                name = "Fresh, Morning Dew",
+                [PANTS]  = "4D3745",
+				[SHIRT]  = "83C2B8",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "5B847E",
+				[HAIR]   = "664B34",
+				[SKIN]   = "F8D9B9",
+				[CAP]    = "E4F9FF",
+				[EMBLEM] = "E3CF76"
+            },
+			{
+                name = "Fresh, Morning Dew",
+                [PANTS]  = "4D3745",
+				[SHIRT]  = "83C2B8",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "5B847E",
+				[HAIR]   = "664B34",
+				[SKIN]   = "F8D9B9",
+				[CAP]    = "E4F9FF",
+				[EMBLEM] = "E3CF76"
+            },
+			{
+                name = "Fresh, Morning Dew",
+                [PANTS]  = "4D3745",
+				[SHIRT]  = "83C2B8",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "5B847E",
+				[HAIR]   = "664B34",
+				[SKIN]   = "F8D9B9",
+				[CAP]    = "E4F9FF",
+				[EMBLEM] = "E3CF76"
+            },
+			{
+                name = "Fresh, Morning Dew",
+                [PANTS]  = "4D3745",
+				[SHIRT]  = "83C2B8",
+				[GLOVES] = "FFFFFF",
+				[SHOES]  = "5B847E",
+				[HAIR]   = "664B34",
+				[SKIN]   = "F8D9B9",
+				[CAP]    = "E4F9FF",
+				[EMBLEM] = "E3CF76"
+            }
+        }
+    }
+}
 
 CHAR_DAVEY_TOOIE = _G.charSelect.character_add(
     "Davey Tooie", -- Character Name
-    "", -- Description
+    "Rocking a new 3D aesthetic, DT's here to help cause a Tooie Mix whether you know who he is or not! A bit floaty while also having access to several special moves, those being his Spin Jump, Hammer Swing, and Deep Pockets. Immune to damage from being squished.", -- Description
     "Honi", -- Credits
-    "9F26FC",           -- Menu Color
+    "91B3D2",           -- Menu Color
     E_MODEL_DAVEYT,       -- Character Model
     CT_MARIO,           -- Override Character
     TEX_ICON_DAVEYT, -- Life Icon
     1                  -- Camera Scale
-)
+	)
+
+	for i = 1, #PALETTES_DAVEY do
+        local costume = PALETTES_DAVEY[i]
+        if i == 1 then
+            _G.charSelect.character_add_costume(CHAR_DAVEY_TOOIE, costume.name, nil, costume.credit, nil, costume.model)
+        end
+        _G.charSelect.character_add_voice(costume.model, VOICETABLE_TOOIE)
+        _G.charSelect.character_add_caps(costume.model, CAPS_DT)
+        for p = 1, #costume.palettes do
+            local palette = costume.palettes[p]
+            _G.charSelect.character_add_palette_preset(costume.model, palette, palette.name)
+        end
+    end
+	
 charSelect.character_add_graffiti(CHAR_DAVEY_TOOIE, DAVEYT_GRAFFITI)
 --charSelect.character_add_caps(E_MODEL_DAVEYT, CAPS_DT)
 charSelect.character_add_animations(E_MODEL_DAVEYT, animsDT)
@@ -195,14 +346,27 @@ charSelect.character_add_voice(E_MODEL_DAVEYT, VOICETABLE_TOOIE)
 
 CHAR_DEW = _G.charSelect.character_add(
     "Dew", -- Character Name
-    "", -- Description
+    "Coming from an alternate realm entirely, Dew's here to grab whatever he can! Surprisingly, DT and Dew being in the same room doesn't destroy everything they know. Quite similar to DT, although he's a bit less floaty and his special moves consist of his Spin Jump and the Blazing Swing.", -- Description
     "Honi", -- Credits
-    "9F26FC",           -- Menu Color
+    "83C2B8",           -- Menu Color
     E_MODEL_DEW,       -- Character Model
     CT_LUIGI,           -- Override Character
     TEX_ICON_DEW, -- Life Icon
     1                  -- Camera Scale
-)
+	)
+	for i = 1, #PALETTES_DEW do
+        local costume = PALETTES_DEW[i]
+        if i >= 1 then
+            _G.charSelect.character_add_costume(CHAR_DEW, costume.name, nil, costume.credit, nil, costume.model)
+        end
+        _G.charSelect.character_add_voice(costume.model, VOICETABLE_DEW)
+        _G.charSelect.character_add_caps(costume.model, CAPS_DEW)
+        for p = 1, #costume.palettes do
+            local palette = costume.palettes[p]
+            _G.charSelect.character_add_palette_preset(costume.model, palette, palette.name)
+        end
+    end
+	
 charSelect.character_add_caps(E_MODEL_DEW, CAPS_DEW)
 charSelect.character_add_voice(E_MODEL_DEW, VOICETABLE_DEW)
 charSelect.character_add_animations(E_MODEL_DEW, animsDew)

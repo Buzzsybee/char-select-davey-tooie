@@ -14,12 +14,26 @@ amp = 10
 plant = 11
 chair = 12
 piano = 13
---spiny = 0
 box = 14
 wingcap = 15
 metalcap = 16
 vanishcap = 17
--- bluecoin = 0
+snufit = 18
+ukiki = 19
+thwomp = 20
+scuttlebug = 21
+lakitu = 22
+heaveho = 23
+klepto = 24
+chainchomp = 25
+butterflies = 26
+spindrift = 27
+bowser = 28
+crazybox = 29
+skeeter = 30
+flyingbook = 31
+toad = 32
+mrblizzard = 33
 
 
 -- bhv and model from the pool items
@@ -77,12 +91,6 @@ local daveyItemPool = {
         bhv = id_bhvMadPiano,
         model = E_MODEL_MAD_PIANO
     },
-    --[[
-    [spiny] = {
-        bhv = id_bhvSpiny,
-        model = E_MODEL_SPINY_BALL
-    }, -- never spawns at all
-    ]]
     [box] = {
         bhv = id_bhvBreakableBoxSmall,
         model = E_MODEL_BREAKABLE_BOX_SMALL
@@ -99,22 +107,79 @@ local daveyItemPool = {
         bhv = id_bhvVanishCap,
         model = E_MODEL_MARIOS_CAP
     },
-    --[[
-    [bluecoin] = {
-        bhv = id_bhvMovingBlueCoin,
-        model = E_MODEL_BLUE_COIN
-    } -- gets collected instantly regardless
-    ]]
-    
+    [snufit] = {
+        bhv = id_bhvSnufit,
+        model = E_MODEL_SNUFIT
+    },
+	[ukiki] = {
+        bhv = id_bhvUkiki,
+        model = E_MODEL_UKIKI
+    },
+	[thwomp] = {
+        bhv = id_bhvThwomp,
+        model = E_MODEL_THWOMP
+    },
+	[scuttlebug] = {
+        bhv = id_bhvScuttlebug,
+        model = E_MODEL_SCUTTLEBUG
+    },
+	[lakitu] = {
+        bhv = id_bhvEnemyLakitu,
+        model = E_MODEL_ENEMY_LAKITU
+    },
+	[heaveho] = {
+        bhv = id_bhvHeaveHo,
+        model = E_MODEL_HEAVE_HO
+    },
+	[klepto] = {
+        bhv = id_bhvKlepto,
+        model = E_MODEL_KLEPTO
+    },
+	[chainchomp] = {
+        bhv = id_bhvChainChomp,
+        model = E_MODEL_CHAIN_CHOMP
+    },
+	[butterflies] = {
+        bhv = id_bhvTripletButterfly,
+        model = E_MODEL_BUTTERFLY
+    },
+	[spindrift] = {
+        bhv = id_bhvSpindrift,
+        model = E_MODEL_SPINDRIFT
+    },
+	[bowser] = {
+        bhv = id_bhvBowser,
+        model = E_MODEL_BOWSER
+    },
+	[crazybox] = {
+        bhv = id_bhvJumpingBox,
+        model = E_MODEL_METAL_BOX
+    },
+	[skeeter] = {
+        bhv = id_bhvSkeeter,
+        model = E_MODEL_SKEETER
+    },
+	[flyingbook] = {
+        bhv = id_bhvFlyingBookend,
+        model = E_MODEL_BOOKEND
+    },
+	[toad] = {
+        bhv = id_bhvToadMessage,
+        model = E_MODEL_TOAD
+    },
+	[mrblizzard] = {
+        bhv = id_bhvMrBlizzard,
+        model = E_MODEL_MR_BLIZZARD
+    },
 }
 
 ---comment
 ---@param obj Object
 function spawn_item_from_pool(obj)
     local v = {
-        x = c.pos.x + sins(c.faceAngle.y) * -130,
+        x = c.pos.x + sins(c.faceAngle.y) * 130,
         y = c.pos.y,
-        z = c.pos.z + coss(c.faceAngle.y) * -130
+        z = c.pos.z + coss(c.faceAngle.y) * 130
     }
 
     local object = daveyItemPool[obj]
@@ -130,7 +195,7 @@ local function davey_gravity(m)
     init_locals(m)
 
     if jumpAct[m.action] and e.actionTick == 0 then
-        m.vel.y = m.vel.y + 20
+        m.vel.y = m.vel.y + 12.5
     end
 end
 -- will try this custom object from wapeach extrachars (im truly learning new styff heres)
@@ -274,7 +339,7 @@ function act_davey_drill_down(m)
         play_mario_heavy_landing_sound(m, SOUND_ACTION_TERRAIN_HEAVY_LANDING)
     end
 
-    m.vel.y = -74
+    m.vel.y = -80
 
     e.gfxAngleY = e.gfxAngleY + 0x4000
     m.marioObj.header.gfx.angle.y = e.gfxAngleY
@@ -298,10 +363,12 @@ function act_davey_item(m)
 
     if m.actionTimer == 0 then
         set_mario_animation(m, CHAR_ANIM_BACKFLIP)
-        m.vel.y = 60
+        m.vel.y = 50
         m.invincTimer = 10
-        spawn_item_from_pool(randoitem)
-        spawn_particle(m, PARTICLE_MIST_CIRCLE)
+		if m.playerIndex == 0 then
+			spawn_item_from_pool(randoitem)
+			spawn_particle(m, PARTICLE_MIST_CIRCLE)
+		end
     end
     if buttonBpress then set_mario_action(m, ACT_DIVE, 0) end
 
@@ -373,7 +440,7 @@ function on_set_action_dt(m)
     init_locals(m)
 
     if m.action == ACT_DAVEY_SPIN_JUMP then
-        m.vel.y = 80
+        m.vel.y = 70
     end
 
     if (action == ACT_PUNCHING or action == ACT_MOVE_PUNCHING) and m.prevAction ~= ACT_DAVEY_HAMMER_SWING then
@@ -411,7 +478,7 @@ function update_dt_chars(m)
         end
     end
     
-    if action == ACT_CROUCHING or action == ACT_CROUCH_SLIDE or action == ACT_START_CROUCHING or action == ACT_START_CRAWLING or action == ACT_CRAWLING then
+    if action == ACT_CROUCHING or action == ACT_START_CROUCHING or action == ACT_START_CRAWLING or action == ACT_CRAWLING then
         if buttonXpress then
             set_mario_action(m, ACT_DAVEY_ITEM_THROW, 0)
         end
@@ -422,8 +489,8 @@ function update_dt_chars(m)
         end
     end
 
-    -- waterbreathing and immunity to squishing
-    if m.waterLevel > m.pos.y or action == ACT_SQUISHED then
+    -- immunity/heal from squishing
+    if action == ACT_SQUISHED then
         m.health = m.health + 100
     end
 
